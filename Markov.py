@@ -6,6 +6,7 @@ import numpy as np
 # assumptions: The test case shows a 3x3 matrix, but other test cases can have
 			#  more or less rows/columns (always square matrix though)
 def per_to_dec(mat):
+
 	pass
 
 
@@ -18,7 +19,13 @@ def per_to_dec(mat):
 # assumptions: The test case shows a 3x3 matrix, but other test cases can have
 			#  more or less rows/columns (always square matrix though)
 def sig_change(oldmat, newmat):
-	pass
+
+	sigC = False
+	for i in range (oldmat.shape[0]):
+		for k in range (oldmat.shape[1]):
+			if( (oldmat[i,k] - newmat[i,k]) > 0.0001 ):
+				sigC = True
+	return sigC
 
 
 
