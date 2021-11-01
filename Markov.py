@@ -7,7 +7,18 @@ import numpy as np
 			#  more or less rows/columns (always square matrix though)
 def per_to_dec(mat):
 
-	pass
+	matTemp = []
+
+	for i in range(mat.shape[0]):
+		indivRow = []
+		for k in range(mat.shape[1]):
+			indivRow.append(mat[i, k] / 100)
+
+		matTemp.append(indivRow)
+
+	matDec = np.array(matTemp)
+	return matDec
+
 
 
 # function name: sig_change
@@ -23,7 +34,7 @@ def sig_change(oldmat, newmat):
 	sigC = False
 	for i in range (oldmat.shape[0]):
 		for k in range (oldmat.shape[1]):
-			if( (oldmat[i,k] - newmat[i,k]) > 0.0001 ):
+			if( abs(oldmat[i,k] - newmat[i,k]) > 0.0001 ):
 				sigC = True
 	return sigC
 
