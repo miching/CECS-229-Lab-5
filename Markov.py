@@ -49,7 +49,16 @@ def sig_change(oldmat, newmat):
 			#  more or less rows/columns (always square matrix though)
 			#  x will always be >= 1
 def prob_x(mat, x):
-	pass
+
+	matDec = per_to_dec(mat)
+	temp = np.array(matDec)
+	print (x)
+	for i in range(x):
+		print("Counter")
+		matDec = temp.dot(matDec)
+
+	return matDec
+
 
 
 # function name: long_run_dist
