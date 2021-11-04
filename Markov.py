@@ -73,7 +73,24 @@ def prob_x(mat, x):
 # assumptions: The test case shows a 3x3 matrix, but other test cases can have
 			#  more or less rows/columns (always square matrix though)
 def long_run_dist(probs):
-	pass
+
+	matDec = per_to_dec(probs)
+	orginalMat = np.array(matDec)
+	oldMat = np.array(matDec)
+	matDec = np.dot(matDec, orginalMat)
+	# print (x)
+
+	while(sig_change(oldMat, matDec)):
+		# print("Counter")
+		# print (matDec)
+		oldMat = matDec
+		matDec = np.dot(matDec, orginalMat)
+
+	# print("After loop")
+	# print(matDec)
+
+	return matDec
+
 
 
 
