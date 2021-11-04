@@ -164,3 +164,58 @@ expected4 = np.array([[0.64887596, 0.29769378, 0.05343026],
 					  [0.64882099, 0.29773604, 0.05344296],
 					  [0.64878924, 0.29776046, 0.0534504]])
 checker(expected4, test4)
+
+
+print("\n My Test Cases:")
+
+###########################################################
+prob1 = np.array([[25, 20, 25, 30],
+                [20, 30, 25, 30],
+                [25, 20, 40, 10],
+                [30, 30, 10, 30]])
+
+
+
+print("\ntest 5: per_to_dec")
+test10 = per_to_dec(prob1)
+expected10 = np.array([[0.25, 0.20, 0.25, 0.30],
+                      [0.2, 0.3, 0.25, 0.3],
+                      [0.25, 0.2, 0.4, 0.1],
+                      [0.3, 0.3, 0.1, 0.3]])
+checker(expected10, test10)
+
+
+print("\ntest 6: sig_change")
+compare10 = np.array([[0.255, 0.25, 0.2425, 0.25],
+                      [0.2625, 0.127, 0.2551, 0.265],
+                      [0.2325, 0.2201, 0.2825, 0.205],
+                      [0.25001, 0.26, 0.22, 0.2801]])
+test11 = sig_change(compare10, expected10.dot(expected10))
+expected11 = True
+checker(expected11, test11)
+
+
+print("\ntest 7: sig_change")
+compare11 = np.array([[0.25501, 0.25, 0.2425, 0.25],
+                      [0.2625, 0.27, 0.255, 0.265],
+                      [0.2325, 0.22, 0.282501, 0.205001],
+                      [0.25, 0.26, 0.22001, 0.28]])
+test12 = sig_change(compare11, expected10.dot(expected10))
+expected12 = False
+checker(expected12, test12)
+
+
+print("\ntest 8: prob_x")
+test13 = prob_x(prob1, 5)
+expected13 = expected10.dot(expected10).dot(expected10).dot(expected10).dot(expected10)
+checker(expected13, test13)
+
+
+
+print("\ntest 9: long_run_dist")
+test14 = long_run_dist(prob1)
+expected14 = np.array( [[0.24949288, 0.24949346, 0.2494909,  0.24949419],
+                         [0.26335358, 0.26335434, 0.26335102, 0.26335529],
+                         [0.23394209, 0.23393684, 0.2339598,  0.23393025],
+                         [0.25321145, 0.25321536, 0.25319828, 0.25322026]])
+checker(expected14, test14)
