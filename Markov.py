@@ -52,10 +52,15 @@ def prob_x(mat, x):
 
 	matDec = per_to_dec(mat)
 	temp = np.array(matDec)
-	print (x)
-	for i in range(x):
-		print("Counter")
-		matDec = temp.dot(matDec)
+	#print (x)
+
+	for i in range(x-1):
+		#print("Counter")
+		#print (matDec)
+		matDec = np.dot(matDec, temp)
+
+	#print("After loop")
+	#print(matDec)
 
 	return matDec
 
