@@ -9,8 +9,11 @@ def per_to_dec(mat):
 
 	matTemp = []
 
+	#Row
 	for i in range(mat.shape[0]):
 		indivRow = []
+
+		#Column
 		for k in range(mat.shape[1]):
 			indivRow.append(mat[i, k] / 100)
 
@@ -31,11 +34,16 @@ def per_to_dec(mat):
 			#  more or less rows/columns (always square matrix though)
 def sig_change(oldmat, newmat):
 
+	#Assume no significant change
 	sigC = False
+
 	for i in range (oldmat.shape[0]):
 		for k in range (oldmat.shape[1]):
+
+			#Check if difference is larger than 0.0001
 			if( abs(oldmat[i,k] - newmat[i,k]) > 0.0001 ):
 				sigC = True
+
 	return sigC
 
 
@@ -50,17 +58,15 @@ def sig_change(oldmat, newmat):
 			#  x will always be >= 1
 def prob_x(mat, x):
 
+	#Update Matrix
 	matDec = per_to_dec(mat)
-	temp = np.array(matDec)
-	#print (x)
 
+	#Orginal Matrix
+	orginalMat = np.array(matDec)
+
+	#Number of iterations, minus one for the starting matrix
 	for i in range(x-1):
-		#print("Counter")
-		#print (matDec)
-		matDec = np.dot(matDec, temp)
-
-	#print("After loop")
-	#print(matDec)
+		matDec = np.dot(matDec, orginalMat)
 
 	return matDec
 
@@ -74,20 +80,23 @@ def prob_x(mat, x):
 			#  more or less rows/columns (always square matrix though)
 def long_run_dist(probs):
 
+	#Update Matrix
 	matDec = per_to_dec(probs)
-	orginalMat = np.array(matDec)
-	oldMat = np.array(matDec)
-	matDec = np.dot(matDec, orginalMat)
-	# print (x)
 
+	#Orginal Matrix
+	orginalMat = np.array(matDec)
+
+	#Old Matrix to compare with
+	oldMat = np.array(matDec)
+
+	#Second iteration
+	matDec = np.dot(matDec, orginalMat)
+
+	#Continue till no significant change
 	while(sig_change(oldMat, matDec)):
-		# print("Counter")
-		# print (matDec)
 		oldMat = matDec
 		matDec = np.dot(matDec, orginalMat)
 
-	# print("After loop")
-	# print(matDec)
 
 	return matDec
 
@@ -166,7 +175,7 @@ expected4 = np.array([[0.64887596, 0.29769378, 0.05343026],
 checker(expected4, test4)
 
 
-print("\n My Test Cases:")
+print("\n Other Test Cases:")
 
 ###########################################################
 prob1 = np.array([[25, 20, 25, 30],
@@ -219,3 +228,77 @@ expected14 = np.array( [[0.24949288, 0.24949346, 0.2494909,  0.24949419],
                          [0.23394209, 0.23393684, 0.2339598,  0.23393025],
                          [0.25321145, 0.25321536, 0.25319828, 0.25322026]])
 checker(expected14, test14)
+
+
+print("\nMy Test Cases:")
+
+prob2 = np.array([[0, 1, 2, 3],
+                [21, 33, 25, 30],
+                [25, 20, 40, 10],
+                [97, 98, 99, 100]])
+
+
+
+print("\ntest 10: per_to_dec")
+test15 = per_to_dec(prob2)
+expected15 = np.array([[0, 0.01, 0.02, 0.03],
+                      [0.21, 0.33, 0.25, 0.3],
+                      [0.25, 0.2, 0.4, 0.1],
+                      [0.97, 0.98, 0.99, 1]])
+checker(expected15, test15)
+
+#True if there is at least one element in newmat that is at least 0.0001 away
+print("\ntest 11: sig_change")
+compare16 = np.array([[0.00011, 0.01, 0.02, 0.03],
+                      [0.21, 0.33, 0.25, 0.3],
+                      [0.25, 0.2, 0.4, 0.1],
+                      [0.97, 0.98, 0.99, 1]])
+test16 = sig_change(compare16, expected15)
+expected16 = True
+checker(expected16, test16)
+
+print("\ntest 11: sig_change")
+compare16 = np.array([[0.0002, 0.01, 0.02, 0.03],
+                      [0.21, 0.33, 0.25, 0.3],
+                      [0.25, 0.2, 0.4, 0.1],
+                      [0.97, 0.98, 0.99, 1]])
+test16 = sig_change(compare16, expected15)
+expected16 = True
+checker(expected16, test16)
+
+
+print("\ntest 12: sig_change")
+compare17 = np.array([[0.0001, 0.01, 0.02, 0.03],
+                      [0.21, 0.33, 0.25, 0.3],
+                      [0.25, 0.2, 0.4, 0.1],
+                      [0.97, 0.98, 0.99, 1]])
+test17 = sig_change(compare17, expected15)
+expected17 = False
+checker(expected17, test17)
+
+print("\ntest 12: sig_change")
+compare17 = np.array([[0.00009, 0.01, 0.02, 0.03],
+                      [0.21, 0.33, 0.25, 0.3],
+                      [0.25, 0.2, 0.4, 0.1],
+                      [0.97, 0.98, 0.99, 1]])
+test17 = sig_change(compare17, expected15)
+expected17 = False
+checker(expected17, test17)
+
+print("\ntest 13: prob_x")
+test18 = prob_x(prob2, 1)
+expected18 = expected15
+checker(expected18, test18)
+
+print("\ntest 13: prob_x")
+test18 = prob_x(prob2, 2)
+expected18 = expected15.dot(expected15)
+checker(expected18, test18)
+
+print("\ntest 14: prob_x")
+test18 = prob_x(prob2, 5)
+expected18 = expected15.dot(expected15).dot(expected15).dot(expected15).dot(expected15)
+checker(expected18, test18)
+
+
+
